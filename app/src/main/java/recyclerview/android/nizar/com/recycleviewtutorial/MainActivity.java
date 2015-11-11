@@ -2,37 +2,46 @@ package recyclerview.android.nizar.com.recycleviewtutorial;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
+
+    private RecyclerView recyclerView;
+    private MyAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        // recyclerView.setHasFixedSize(true);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        // Use the default animator
+        // recyclerView.setItemAnimator(new DefaultItemAnimator());
+        // you could add item decorators
+        //	RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        //	recyclerView.addItemDecoration(itemDecoration);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        ArrayList<String> input = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            input.add("Test" + i);
         }
 
-        return super.onOptionsItemSelected(item);
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(input);
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.remove("Test1");
     }
+
 }
